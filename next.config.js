@@ -20,7 +20,6 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // Apply this cache configuration to all routes in your application.
         source: "/:path*",
         headers: [
           {
@@ -30,7 +29,7 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self';",
+              "default-src 'self'; script-src 'self' 'unsafe-inline' https://vercel.live/ https://vercel.fides-cdn.ethyca.com/; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self';",
           },
         ],
       },
