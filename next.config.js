@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -10,43 +12,26 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "s3.amazonaws.com", // Example: if you use S3 for images
-        port: "",
-        pathname: "/my-bucket/**",
-      },
-      {
-        protocol: "https",
-        hostname: "cdn.jsdelivr.net", // Allow images from jsdelivr if needed
-        port: "",
-        pathname: "/npm/**",
+        hostname: "rickandmortyapi.com",
+        pathname: "/api/character/avatar/**",
       },
     ],
     unoptimized: true,
-    dangerouslyAllowSVG: true, // ADD THIS LINE
-    contentDispositionType: "inline", // Recommended with dangerouslyAllowSVG
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;", // Recommended with dangerouslyAllowSVG
   },
   async headers() {
     return [
       {
-        source: "/(.*)",
+        // Apply this cache configuration to all routes in your application.
+        source: "/:path*",
         headers: [
           {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+          {
             key: "Content-Security-Policy",
-            value: `
-              default-src 'self';
-              script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live/ https://vercel.fides-cdn.ethyca.com/ https://cdn.jsdelivr.net;
-              style-src 'self' 'unsafe-inline' https://vercel.live/ https://vercel.fides-cdn.ethyca.com/ https://fonts.googleapis.com/ https://cdn.jsdelivr.net;
-              img-src 'self' blob: data: https://cdn.jsdelivr.net;
-              font-src 'self' https://fonts.gstatic.com;
-              object-src 'none';
-              base-uri 'self';
-              form-action 'self';
-              frame-ancestors 'none';
-              upgrade-insecure-requests;
-            `
-              .replace(/\s{2,}/g, " ")
-              .trim(),
+            value:
+              "default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self';",
           },
         ],
       },
