@@ -16,7 +16,6 @@ const nextConfig = {
         pathname: "/api/character/avatar/**",
       },
     ],
-    unoptimized: true,
   },
   async headers() {
     return [
